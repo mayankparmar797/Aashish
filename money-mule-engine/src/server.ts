@@ -8,6 +8,9 @@ import { graphRoutes } from "./routes/graph";
 import { traceRoutes } from "./routes/trace";
 import { analyticsRoutes } from "./routes/analytics";
 import { riskRoutes } from "./routes/risk";
+import { policeRoutes } from "./routes/police";
+import { muleRingRoutes } from "./routes/mule-rings";
+import { ingestionRoutes } from "./routes/ingestion";
 
 const app = Fastify({
   logger: true
@@ -20,16 +23,21 @@ app.register(cors, {
 app.get("/health", async () => {
   return {
     status: "ok",
-    service: "money-mule-engine",
-    version: "0.1.0"
+    service: "TraceMind Mule Engine",
+    version: "2.0.0",
+    hackathon: "VoidHacks 8.0"
   };
 });
+
 app.register(transactionRoutes);
 app.register(accountRoutes);
 app.register(graphRoutes);
 app.register(traceRoutes);
 app.register(analyticsRoutes);
 app.register(riskRoutes);
+app.register(policeRoutes);
+app.register(muleRingRoutes);
+app.register(ingestionRoutes);
 
 const start = async () => {
   try {
@@ -40,7 +48,7 @@ const start = async () => {
       host: "0.0.0.0"
     });
 
-    console.log("🚀 Server running on http://localhost:8000");
+    console.log("🚀 TraceMind Mule Engine running on http://localhost:8000");
   } catch (error) {
     app.log.error(error);
     process.exit(1);

@@ -4,16 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsx watch src/server.ts",
+    "test": "node ./node_modules/tsx/dist/cli.mjs src/verify-full-stack.ts",
+    "test:patterns": "node ./node_modules/tsx/dist/cli.mjs src/patterns/test-all.ts",
+    "test:risk": "node ./node_modules/tsx/dist/cli.mjs src/analytics/test-risk-engine.ts",
+    "dev": "node ./node_modules/tsx/dist/cli.mjs watch src/server.ts",
     "build": "tsc",
-    "start": "node dist/server.js"
+    "start": "node ./node_modules/tsx/dist/cli.mjs src/server.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "@esbuild/win32-x64": "^0.28.2",
     "@fastify/cors": "^11.3.0",
     "dotenv": "^18.0.5",
     "duckdb": "^1.4.4",

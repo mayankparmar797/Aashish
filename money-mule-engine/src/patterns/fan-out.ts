@@ -101,7 +101,7 @@ export function detectFanOut(
           score,
 
           description:
-            `Account sent money to ${uniqueRecipients} different accounts`,
+            `Layer 2 Distributor Mule (High Out-Degree Centrality): Slicing incoming funds into ${uniqueRecipients} downstream accounts`,
 
           accounts: Array.from(recipients),
 

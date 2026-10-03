@@ -59,7 +59,7 @@ export async function detectFanIn(
           type: "FAN_IN",
           severity,
           score,
-          description: `Account received money from ${uniqueAccounts} different accounts`,
+          description: `Layer 1 Collector Mule (High In-Degree Centrality): Account pooled deposits from ${uniqueAccounts} distinct accounts`,
           accounts: Array.from(uniqueSenders),
           transactionIds: transactions.map(
             tx => String(tx.transaction_id)

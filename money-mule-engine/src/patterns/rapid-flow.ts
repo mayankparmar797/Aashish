@@ -82,23 +82,26 @@ export async function detectRapidFlow(
               (outgoingTime - incomingTime) /
               (1000 * 60);
 
-            if (
-              differenceMinutes <=
-              RAPID_FLOW_WINDOW_MINUTES
-            ) {
-              const incomingAmount =
-                Number(inTx.amount);
+            /*
+             * High-Velocity Passthrough:
+             * Flags accounts moving >= 90% of incoming funds to downstream nodes
+             * within a narrow 3 to 15-minute window.
+             */
+            const incomingAmount = Number(inTx.amount);
+            const outgoingAmount = Number(outTx.amount);
+            const passthroughRatio = incomingAmount > 0 ? outgoingAmount / incomingAmount : 0;
 
-              const outgoingAmount =
-                Number(outTx.amount);
+            if (differenceMinutes <= 15 || differenceMinutes <= RAPID_FLOW_WINDOW_MINUTES) {
+              const isHighVelocity = differenceMinutes >= 2.5 && differenceMinutes <= 15.5 && passthroughRatio >= 0.85;
 
               return resolve({
                 type: "RAPID_FLOW",
-                severity: "HIGH",
-                score: 30,
+                severity: isHighVelocity ? "CRITICAL" : "HIGH",
+                score: isHighVelocity ? 35 : 30,
 
-                description:
-                  `Money moved through account within ${differenceMinutes.toFixed(1)} minutes`,
+                description: isHighVelocity
+                  ? `High-Velocity Passthrough: Account moved ${(passthroughRatio * 100).toFixed(0)}% of incoming funds to downstream nodes within ${differenceMinutes.toFixed(1)} minutes (3-15m window)`
+                  : `Money moved through account within ${differenceMinutes.toFixed(1)} minutes`,
 
                 accounts: [
                   String(inTx.sender_account),
@@ -114,12 +117,10 @@ export async function detectRapidFlow(
                 metadata: {
                   incomingAmount,
                   outgoingAmount,
-                  timeDifferenceMinutes:
-                    Number(
-                      differenceMinutes.toFixed(2)
-                    ),
-                  windowMinutes:
-                    RAPID_FLOW_WINDOW_MINUTES
+                  passthroughRatio: Number(passthroughRatio.toFixed(2)),
+                  isHighVelocity,
+                  timeDifferenceMinutes: Number(differenceMinutes.toFixed(2)),
+                  windowMinutes: 15
                 }
               });
             }

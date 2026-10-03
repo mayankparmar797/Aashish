@@ -3,7 +3,8 @@ export type PatternType =
   | "FAN_OUT"
   | "CYCLE"
   | "RAPID_FLOW"
-  | "MULTI_HOP";
+  | "MULTI_HOP"
+  | "TERMINAL_CASHOUT";
 
 export type PatternSeverity =
   | "LOW"

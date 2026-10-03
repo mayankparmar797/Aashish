@@ -5,6 +5,7 @@ import { detectFanOut } from "./fan-out";
 import { detectCycle } from "./cycle";
 import { detectRapidFlow } from "./rapid-flow";
 import { detectMultiHop } from "./multi-hop";
+import { detectTerminalCashout } from "./terminal-cashout";
 
 export async function detectAllPatterns(
   accountId: string
@@ -14,13 +15,15 @@ export async function detectAllPatterns(
     fanOut,
     cycle,
     rapidFlow,
-    multiHop
+    multiHop,
+    terminalCashout
   ] = await Promise.all([
     detectFanIn(accountId),
     detectFanOut(accountId),
     detectCycle(accountId, 4),
     detectRapidFlow(accountId),
-    detectMultiHop(accountId, 4)
+    detectMultiHop(accountId, 4),
+    detectTerminalCashout(accountId)
   ]);
 
   const patterns = [
@@ -28,7 +31,8 @@ export async function detectAllPatterns(
     fanOut,
     cycle,
     rapidFlow,
-    multiHop
+    multiHop,
+    terminalCashout
   ].filter(
     (pattern): pattern is NonNullable<typeof pattern> =>
       pattern !== null

@@ -1,13 +1,29 @@
 {
-  "name": "final-hacks",
+  "name": "tracemind-monorepo",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Trace Mind - Law Enforcement Money Mule Intelligence Platform",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "concurrently -n \"backend,frontend\" -c \"blue,green\" \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "start": "concurrently -n \"backend,frontend\" -c \"blue,green\" \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "npm --prefix money-mule-engine run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "build:backend": "npm --prefix money-mule-engine run build",
+    "build:frontend": "npm --prefix frontend run build",
+    "build": "npm run build:backend && npm run build:frontend",
+    "test": "npm --prefix money-mule-engine test"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "cyber-forensics",
+    "money-mule",
+    "graph-analytics",
+    "indore-police",
+    "1930-cyber-cell",
+    "section-91-crpc",
+    "voidhacks8"
+  ],
+  "author": "TraceMind Team",
   "license": "ISC",
-  "type": "commonjs"
+  "devDependencies": {
+    "concurrently": "^10.0.5"
+  }
 }
